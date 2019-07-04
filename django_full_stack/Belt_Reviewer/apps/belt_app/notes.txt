@@ -1,0 +1,126 @@
+# dictionary in template access
+# views
+
+from django.template.defaulttags import register
+
+@register.filter
+def hash(h, key):
+    return h[key]
+
+# template syntax
+{{dictionary|hash:review.rating|safe}}
+
+#date picker and jquery ui
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $( function() {
+        $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'}).val();
+         } );
+
+
+(?P<id>\d+)
+
+class User(models.Model):
+    first_name = models.CharField(max_length=45)
+    last_name = models.CharField(max_length=45)
+    email = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = registration_manager()
+
+class Job(models.Model):
+    title = models.CharField(max_length=45)
+    desc = models.TextField()
+    location = models.CharField(max_length=45)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User, related_name='jobs_created')
+    worker = models.ForeignKey(User, related_name='current_jobs')
+
+class Category(models.Model):
+    category = models.CharField(max_length=45)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    job = models.ForeignKey(Job, related_name="categories")
+
+
+
+
+
+
+git clone https://github.com/EddiePulido/Main_repo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+gunicorn --bind 0.0.0.0:8000 {{projectName}}.wsgi:applicationgunicorn --bind 0.0.0.0:8000 {{projectName}}.wsgi:application
+
+
+
+gunicorn --bind 0.0.0.0:8000 Main.wsgi:application
+
+
+
+
+cd {{projectName}}
+
+
+
+
+
+
+
+[Unit]
+Description=gunicorn daemon
+After=network.target
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/Main_repo
+ExecStart=/home/ubuntu/Main_repo/venv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/Main_repo/Main.sock Main.wsgi:application
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+sudo vim /etc/nginx/sites-available/Main
+
+server {
+  listen 80;
+  server_name 18.222.11.89;
+  location = /favicon.ico { access_log off; log_not_found off; }
+  location /static/ {
+      root /home/ubuntu/Main_repo;
+  }
+  location / {
+      include proxy_params;
+      proxy_pass http://unix:/home/ubuntu/Main_repo/Main.sock;
+  }
+}
+
+
+
+
+
+
+sudo ln -s /etc/nginx/sites-available/Main /etc/nginx/sites-enabled
+
+
+
+
+
+
+
+

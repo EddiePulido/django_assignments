@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Favorite Books</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top bg-light">
+      <div class="container">
+        <div class="navbar-header">
+          <h1 class="navbar-brand" href="/">Welcome {{request.session.first_name}}</h1>
+        </div>
+          <ul class="nav navbar-nav navbar-right">
+            
+            
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="container col p-5">
+                <form action="/add_book" method="post" class="form">
+                    {% csrf_token %}
+                    <h3>Add a Favorite Book</h3>
+                    <br>
+                    
+                        <p>Title:</p>
+                        <input type="text" name="title">
+                
+                    
+                        <p>Description:</p>
+                        <textarea class="form-control" name="description"></textarea>
+
+                    <input type="submit" value="Add Book" class="btn btn-primary mt-4">
+                    
+                </form>
+            </div>
+            <div class="container col p-5">
+                <h3>All Books</h3>
+                {% for book in books %}
+                    <a href="books/{{book.id}}">{{book.title}}</a>
+                    <p>(added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}})</p>
+                    {% if book in user.liked_books.all %}      
+                        <p class="font-italic">this is one of your favorites</p>
+
+                    {% else %}
+                        <a class="d-block" href="add/{{book.id}}">Add to Favorites</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

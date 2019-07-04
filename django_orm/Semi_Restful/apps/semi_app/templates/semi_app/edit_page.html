@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $( function() {
+        $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'}).val();
+         } );
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit show {{show.id}}</h1>
+        <a class="float-right align-top" href="/shows">Go Back</a>
+    </div>
+    {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+    <div class="container col-8 " >
+        <form class="form" action="/shows/{{show.id}}/update" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{show.id}}">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input class="form-control" type="text" name="title" value="{{show.title}}">
+            </div>
+            <div class="form-group form-inline">
+                <label for="network">Network:</label>
+                <input class="form-control" type="text" name="network" value="{{show.network.name}}">
+                <p></p>
+                <label class="ml-4" for="title">Release Date:</label>
+                <input class="form-control" type="text" name="date" id="datepicker" value="{{show.release_date|date:'Y-m-d'}}">
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control" name="description" value="{{ show.desc }}"></textarea>
+            </div>
+            <input class="btn btn-primary text-center" type="submit" value="Update">
+        </form>
+    </div>
+</body>
+</html>

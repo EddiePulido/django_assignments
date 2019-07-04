@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books & Authors</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2>Add a Book</h2>
+                <form class="form" action="/add_book" method="post">
+                    {% csrf_token %}
+                    <div class="form-group form-inline">
+                        <label for="title">Title:</label>
+                        <input class="form-control" type="text" name="title">
+                    </div>
+                    <div class="form-group form-inline">
+                        <label for="description">Description:</label>
+                        <textarea class="form-control" name="description" ></textarea>
+                    </div>
+                    <input type="submit" value="add" class="btn btn-primary">
+                </form>
+            </div>
+            <div class="col">
+                <table class="table table-light table-striped">
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Action</th>
+                    {% for book in books_list %}
+                        <tr>
+                            <td>{{ book.id }}</td>
+                            <td>{{ book.title }}</td>
+                            <td><a href="/books/{{book.id}}">View</a><td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

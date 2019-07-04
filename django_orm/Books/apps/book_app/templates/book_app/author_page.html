@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books and Authors</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ author.first_name }} {{ author.last_name }}</h2>
+        <p>ID: {{ author.id }}</p>
+        <p>Description : {{ author.notes }}</p>
+        <br>
+        <br>
+        <p>Books:</p>
+        <ul>
+            {% for book in author.books.all %}
+                <li>{{ book.title }}</li>
+            {% endfor %}
+        </ul>
+        <form class="form" action="/add_book_to_author" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="author_id" value={{author.id}} >
+            <select name="book_id">
+                {% for book in book_list %}
+                    <option value="{{book.id}}">{{ book.title }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Add">
+        </form>
+    </div>
+</body>
+</html>

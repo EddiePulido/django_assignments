@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Page</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'belt_app/css/style.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top bg-light">
+      <div class="container">
+        <div class="navbar-header">
+          <h1 class="navbar-brand" href="/"></h1>
+        </div>
+          <ul class="nav navbar-nav navbar-right">
+            
+            <li><a href="/books">Home</a></li>
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col p-5">
+                <div class="container p-4">
+                    <h4>{{book.title}}</h4>
+                    <p> Author: {{book.author.name}}</p>
+                </div>
+                <div class="container p-4">
+                    <h6>Reviews:</h6>
+                    {% for review in book.reviews.all %}
+                        <p class="border-top">Rating: {{ratings|hash:review.rating|safe}}</p>
+                        <p><a href="/user/{{review.reviewer.id}}">{{review.reviewer.first_name}}</a> says: {{review.review}}</p>
+                        <p class="font-italic d-inline-block">Posted on {{review.created_at|date:"M d, Y"}}</p>
+                        {% if review.reviewer.id == request.session.id %}
+                            <a class="d-inline-block" href="/delete_review/{{review.id}}" >Delete This Review</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col p-5">
+                <form action="/add_review" class="form p-5" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="book_id" value="{{book.id}}">
+                    <p>Add a review:</p>
+                    <textarea class="form-control mb-3" name="review"></textarea>
+                    <select class="d-block" name="rating">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option selected="selected" value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <input class="btn btn-primary mt-3" type="submit" value="Add Review">
+                </form>
+            </div> 
+        </div>
+    </div>
+</body>
+</html>

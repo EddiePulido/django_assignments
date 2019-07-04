@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Date and Time</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'time_display/css/style.css' %}">
+    <link rel="icon">
+</head>
+<body>
+    <div id="box1">
+        <p>
+            The current time and date:
+        </p>
+    </div>
+
+    <div id="box2">
+        <h1>
+            {{date}}            
+        </h1>
+        <h1>
+            {{time}}
+        </h1>
+    </div>
+
+</body>
+</html>

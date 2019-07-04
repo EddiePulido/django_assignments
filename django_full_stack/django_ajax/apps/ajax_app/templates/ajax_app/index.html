@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Ajax
+    </title>
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <h1>My Posts</h1>
+    <div class="posts">
+        {% for post in posts %}
+            <div class="container p-5 border w-25 d-inline-block m-3">
+                {{post.post}}
+            </div>
+    
+        {% endfor %}
+
+    </div>
+
+    <div class="container p-5">
+        <form id="test" action="/posts" method='post'>
+            {% csrf_token %}
+            <p>Add a note:</p>
+            {{new_post_form.as_p}}
+            <input type="submit" value="Post It!" class="btn btn-primary d-block">
+        </form>
+    </div>
+    <script type="text/javascript">
+        // $('form').submit(function(e){
+        //   e.preventDefault();
+        //   $.ajax({
+        //     url: "/posts",
+        //     method: "post",
+        //     data: $(this).serialize(),
+        //     success: function(serverResponse){
+        //         $('.posts').html(serverResponse)
+
+
+        //     }
+        //   })
+        //   $(this).trigger('reset')
+        // })
+
+        $(document).on('submit','form',function(e){
+            e.preventDefault();
+
+            $.ajax({
+                type:'POST',
+                url:'/posts'
+                data:{
+                    post: $('#post_id').val()
+                }
+                success:function(){
+                    
+                }
+            })
+        })
+
+    </script>
+</body>
+</html>

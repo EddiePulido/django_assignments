@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Favorite Books</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top bg-light">
+      <div class="container">
+        <div class="navbar-header">
+          <h1 class="navbar-brand" href="/">Welcome {{request.session.first_name}}</h1>
+        </div>
+          <ul class="nav navbar-nav navbar-right">
+            
+            
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="container col">
+                {% if book.uploaded_by.id == request.session.id %}
+                    <form action="/update" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="book_id" value="{{book.id}}">
+                        <input class="form-control" type="text" name="title" value="{{book.title}}">
+                        <p>Added by: {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</p>
+                        <p>Added on: {{book.created_at |date:"M d, Y @ f A"}}</p>
+                        <p>Last updated on: {{book.updated_at |date:"M d, Y @ f A"}}</p>
+                        <div class="form-group row">
+                            <p class="col">Description:</p>
+                            <div class="col">
+                                <textarea name="description" class="form-control">{{book.desc}}</textarea>
+                                <input class="btn btn-primary d-inline-block" type="submit" value="update">
+                                <a class="btn btn-danger d-inline-block" href="/delete/{{book.id}}">Delete</a>
+                            </div>
+                        </div>
+                        
+                    </form>
+                {% else%}
+                    <h3>{{book.title}}</h3>
+                    <p>Added by: {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</p>
+                        <p>Added on: {{book.created_at |date:"M d, Y @ f A"}}</p>
+                        <p>Last updated on: {{book.updated_at |date:"M d, Y @ f A"}}</p>
+                        <p>Description: {{book.desc}}</p>
+
+                {% endif %}
+            </div>
+            <div class="container col">
+                <h3>Users Who Like This Book</h3>
+                <ul>
+                    {% for user in book.users_who_like.all %}
+                        <li>
+                            {{user.first_name}} {{user.last_names}}
+                            {% if user.id == request.session.id%}
+                                <a href="/unfavorite/{{book.id}}">Un-favorite</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if this_user not in book.users_who_like.all %}
+                <a class="d-block" href="/add/{{book.id}}">Add to Favorites</a>
+            {% endif %}
+            </div>
+            
+        
+        </div>
+        
+    </div>
+</body>
+</html>

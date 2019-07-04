@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Book and Review</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'belt_app/style.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top bg-light">
+      <div class="container">
+        <div class="navbar-header">
+          <h1 class="navbar-brand" href="/"></h1>
+        </div>
+          <ul class="nav navbar-nav navbar-right">
+            
+            <li class="d-inline-block" ><a href="/books">Home</a></li>
+            <li class="d-inline-block"><a href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container p-5">
+        <h1>Add a New Book Title and a Review:</h1>
+        <form class="form p-5" action="/add_book" method="post">
+            {% csrf_token %}
+            <p class="font-weight-bold">Book Title:</p>
+            <input class="form-control" type="text" name="title">
+            <p class="font-weight-bold">Author:</p>
+            <p>Choose from the list:</p>
+            <select class="form-control" name="author_select">
+                <option selected="selected" value="None">Select an author</option>
+                {% for author in authors %}
+                    <option value="{{author.name}}">{{author.name}}</option>
+                {% endfor %}
+            </select>
+            <p>Or add a new author:</p>
+            <input class="form-control" type="text" name="author">
+            <p class="font-weight-bold">Review:</p>
+            <textarea class="form-control" name="review"></textarea>
+            <p class="font-weight-bold">Rating:</p>
+            <select class="form-control" name="rating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option selected="selected" value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <input class="btn btn-primary d-block mt-4" type="submit" value="Add Book and Review">
+
+        </form>
+    </div>
+
+</body>
+</html>

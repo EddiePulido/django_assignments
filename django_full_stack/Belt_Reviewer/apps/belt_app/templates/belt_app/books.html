@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'belt_app/css/style.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top bg-light">
+      <div class="container">
+        <div class="navbar-header">
+          <h1 class="navbar-brand" href="/">Welcome {{request.session.first_name}}</h1>
+        </div>
+          <ul class="nav navbar-nav navbar-right">
+            
+            <li><a href="/books/add">Add Book and Review</a></li>
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col p-5">
+                <h2>
+                    Recent Book Reviews:
+                </h2>
+                {% for review in reviews%}
+                {% with review.rating as rate %}
+                    <h4><a class="d-block" href="/books/{{review.book.id}}">{{review.book.title}}</a></h4>
+                    <p>Rating:  {{ratings|hash:review.rating|safe}} </p>
+
+                    <p class="ml-3">
+                        <a href="/user/{{review.reviewer.id}}">{{review.reviewer.first_name}}</a>
+                        says: {{review.review}}
+                    </p>
+                    <p class="font-italic ml-3">Posted on {{review.created_at|date:"M d, Y"}}</p>
+                {% endwith %}
+                {% endfor %}
+            </div>
+            <div class="col p-5">
+                <h2>Other Books with Reviews:</h2>
+                <div class="p-3" id="scrollable">
+                    {% for book in books %}
+                        <a class="d-block"href="/books/{{book.id}}">{{ book.title }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
